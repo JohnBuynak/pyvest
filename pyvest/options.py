@@ -287,7 +287,7 @@ def impliedvol(premium, spot, strike, ttm, risk_free = 0, dividend_yield = 0, ca
     dividend_yield = Annual continuously-compounded dividend yield
     """
     if not vol:
-        testvols = np.array([0.001, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.15, 0.25, 0.50, 0.75])
+        testvols = np.array([0.001, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.125, 0.15, 0.175, 0.20, 0.225, 0.25, 0.30, 0.40, 0.50, 0.75])
         
     else:
         testvols = np.array([0.01, vol*75, vol*0.90, vol, vol*1.10, vol * 1.25])
