@@ -270,6 +270,120 @@ def optionvega(spot, strike, volatility, ttm, risk_free = 0.02, dividend_yield =
     
     return (1/100)*(s*np.exp(-d*t)*np.sqrt(t)*(1/np.sqrt(2*np.pi))*np.exp((-d1**2)/2))
 
+def calllambda(spot, strike, volatility, ttm, risk_free = 0.02, dividend_yield = 0):
+    
+    """
+    Calculates the lambda of a European-style option using the Black-Scholes option pricing
+    model
+    
+    Lambda is a measure of option leverage, which is defined as the expected percent change
+    in the value of an option for a given percentage change in the
+    value of the underlying stock price.
+    
+    spot = Spot price of the underlying asset
+    strike =  Strike price of the option
+    volatility =  Implied volatility of the underlying asset price, defined as the annualized standard deviation of the asset returns
+    ttm = Time to maturity in years
+    risk_free =  Annual continuously-compounded risk-free rate
+    dividend_yield = Annual continuously-compounded dividend yield
+    """
+    
+    d = calldelta(spot, strike, volatility, ttm, risk_free, dividend_yield)
+    p = callpremium(spot, strike, volatility, ttm, risk_free, dividend_yield)
+    
+    return d*(spot/p)
+
+def putlambda(spot, strike, volatility, ttm, risk_free = 0.02, dividend_yield = 0):
+    
+    """
+    Calculates the lambda of a European-style option using the Black-Scholes option pricing
+    model
+    
+    Lambda is a measure of option leverage, which is defined as the expected percent change
+    in the value of an option for a given percentage change in the
+    value of the underlying stock price.
+    
+    spot = Spot price of the underlying asset
+    strike =  Strike price of the option
+    volatility =  Implied volatility of the underlying asset price, defined as the annualized standard deviation of the asset returns
+    ttm = Time to maturity in years
+    risk_free =  Annual continuously-compounded risk-free rate
+    dividend_yield = Annual continuously-compounded dividend yield
+    """
+    
+    d = putdelta(spot, strike, volatility, ttm, risk_free, dividend_yield)
+    p = putpremium(spot, strike, volatility, ttm, risk_free, dividend_yield)
+    
+    return d*(spot/p)
+
+
+def optiongamma2(spot, strike, volatility, ttm, risk_free = 0.02, dividend_yield = 0):
+    
+    """
+    Calculates the second-order gamma of a European-style option using the Black-Scholes option pricing
+    model
+    
+    spot = Spot price of the underlying asset
+    strike =  Strike price of the option
+    volatility =  Implied volatility of the underlying asset price, defined as the annualized standard deviation of the asset returns
+    ttm = Time to maturity in years
+    risk_free =  Annual continuously-compounded risk-free rate
+    dividend_yield = Annual continuously-compounded dividend yield
+    """
+    
+    return optiongamma(spot+1, strike, volatility, ttm, risk_free, dividend_yield) - optiongamma(spot, strike, volatility, ttm, risk_free, dividend_yield)
+
+def optionvega2(spot, strike, volatility, ttm, risk_free = 0.02, dividend_yield = 0):
+    
+    """
+    Calculates the second-order vega of a European-style option using the Black-Scholes option pricing
+    model
+    
+    spot = Spot price of the underlying asset
+    strike =  Strike price of the option
+    volatility =  Implied volatility of the underlying asset price, defined as the annualized standard deviation of the asset returns
+    ttm = Time to maturity in years
+    risk_free =  Annual continuously-compounded risk-free rate
+    dividend_yield = Annual continuously-compounded dividend yield
+    """
+    
+    return optionvega(spot, strike, volatility+0.01, ttm, risk_free, dividend_yield) - optionvega(spot, strike, volatility, ttm, risk_free, dividend_yield)
+
+
+def calltheta2(spot, strike, volatility, ttm, risk_free = 0.02, dividend_yield = 0):
+    
+    """
+    Calculates the second-order theta of a European-style option using the Black-Scholes option pricing
+    model
+    
+    spot = Spot price of the underlying asset
+    strike =  Strike price of the option
+    volatility =  Implied volatility of the underlying asset price, defined as the annualized standard deviation of the asset returns
+    ttm = Time to maturity in years
+    risk_free =  Annual continuously-compounded risk-free rate
+    dividend_yield = Annual continuously-compounded dividend yield
+    """
+    
+    return calltheta(spot, strike, volatility, ttm-(1/365), risk_free, dividend_yield) - calltheta(spot, strike, volatility, ttm, risk_free, dividend_yield)
+
+
+def puttheta2(spot, strike, volatility, ttm, risk_free = 0.02, dividend_yield = 0):
+    
+    """
+    Calculates the second-order theta of a European-style option using the Black-Scholes option pricing
+    model
+    
+    spot = Spot price of the underlying asset
+    strike =  Strike price of the option
+    volatility =  Implied volatility of the underlying asset price, defined as the annualized standard deviation of the asset returns
+    ttm = Time to maturity in years
+    risk_free =  Annual continuously-compounded risk-free rate
+    dividend_yield = Annual continuously-compounded dividend yield
+    """
+    
+    return puttheta(spot, strike, volatility, ttm-(1/365), risk_free, dividend_yield) - puttheta(spot, strike, volatility, ttm, risk_free, dividend_yield)
+
+
 
 def impliedvol(premium, spot, strike, ttm, risk_free = 0, dividend_yield = 0, calls = True, error = 0.01, vol = None):
     
